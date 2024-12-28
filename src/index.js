@@ -15,6 +15,13 @@ app.get("/hash-password", (req, res) => {
     });
 })
 
+app.get('/compare-password', (req, res) => {
+    bcrypt.compare("myPlaintextPassword", "$2b$10$qw4QCMYv9fmzr/MPxYXJC.dqVGW5Z6fjY84saH37IC8Ss5GrWl4PO", function(err, result) {
+        res.send(result)
+        console.log("result====>", result)
+    });
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
