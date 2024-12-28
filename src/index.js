@@ -1,8 +1,11 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
 const app = express();
 const port = 3000;
+
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -14,7 +17,9 @@ const jwtGenratedToken =
 app.get("/hash-password", (req, res) => {
   bcrypt.genSalt(10, function (err, salt) {
     bcrypt.hash("myPlaintextPassword", salt, function (err, hash) {
+      res.cookie("password", hash);
       res.send(hash);
+      console.log(hash);
     });
   });
 });
@@ -44,8 +49,10 @@ app.get("/compare-password", (req, res) => {
     "myPlaintextPassword",
     "$2b$10$qw4QCMYv9fmzr/MPxYXJC.dqVGW5Z6fjY84saH37IC8Ss5GrWl4PO",
     function (err, result) {
+      console.log(result);
+      const cookie = req.cookies;
+      console.log(cookie);
       res.send(result);
-      console.log("result====>", result);
     }
   );
 });
